@@ -6,11 +6,6 @@
   position: relative;
   top: 25%;
 }
-@media only screen and (min-width: 376px) {
-  .advice-card {
-    width: 600px;
-  }
-}
 
 .advice-card__id {
   color: hsl(150, 100%, 66%);
