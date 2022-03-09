@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import AdviceCard from './components/AdviceCard/AdviceCard'
+import './App.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface Slip {
+  slip: {
+    id: number
+    advice: string
+  }
 }
 
-export default App;
+function App() {
+  const [slip, setSlip] = useState<Slip>({
+    slip: { id: 1, advice: 'Loading advice' }
+  })
+  const [slipLoaded, setSlipLoaded] = useState(false)
+  const fetchAdvice = async (): Promise<Slip> => {
+    const url = 'https://api.adviceslip.com/advice'
+    return await (await fetch(url)).json()
+  }
+
+  if (!slipLoaded) {
+    setSlipLoaded(true)
+    fetchAdvice().then((slip) => {
+      setSlip(slip)
+    })
+  }
+
+  return (
+    <div className="App">
+      <AdviceCard slip={slip.slip} setSlipLoaded={setSlipLoaded} />
+    </div>
+  )
+}
+
+export default App
